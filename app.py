@@ -29,15 +29,10 @@ UPLOAD_FOLDER = './UPLOADED_AUDIO'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-js = Bundle('index.js', 'recorder.js', 'jquery-3.5.1.min.js', output='gen/main.js')
+js = Bundle('microphoneController.js', 'jquery-3.5.1.min.js', 'recorder.js', output='gen/main.js')
 assets = Environment(app)
 assets.register('main_js', js)
 
-
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-	return send_from_directory(app.config['UPLOAD_FOLDER'],
-							   filename)
 
 @app.route('/')
 def index():

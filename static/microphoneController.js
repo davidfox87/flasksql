@@ -1,36 +1,22 @@
-'use strict';
 
-function setup(args, ctx) {
-  ctx.mic = new Microphone();
 
-  startListening(ctx.mic, args, ctx);
-};
-
-function update(args, ctx) {
-  if (ctx.mic.isRecording) {
-    ctx.mic.processAudio();
-    onVisualizeBuffer(ctx.mic.realtimeBuffer, ctx);
+function update(mic) {
+  if (mic.isRecording) {
+    mic.processAudio();
   }
 }
 
-function cleanup(args, ctx) {
-  ctx.mic.cleanup();
-
-  stopListening(ctx);
+function cleanup() {
+  mic.cleanup();
+  stopListening();
 };
 
-var parameters = [
-  {
-    key: 'isPlayingMicInput',
-    type: 'boolean',
-    default: 'false',
-    name: 'Test Mic Input'
-  }
-];
+
 
 class Microphone {
   constructor(sampleRate = 44100, bufferLength = 4096) {
     this._sampleRate = sampleRate;
+
     // Shorter buffer length results in a more responsive visualization
     this._bufferLength = bufferLength;
 
@@ -38,6 +24,7 @@ class Microphone {
     this._bufferSource = null;
     this._streamSource = null;
     this._scriptNode = null;
+    this._recorder = null;
 
     this._realtimeBuffer = [];
     this._audioBuffer = [];
@@ -52,6 +39,10 @@ class Microphone {
     return this._realtimeBuffer;
   }
 
+    // javascript getter
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
+    // this means i can use mic instance with dot notation to call function
+    //mic.isRecording
   get isRecording() {
     return this._isRecording;
   }
@@ -81,8 +72,13 @@ class Microphone {
         this._scriptNode = this._audioContext.createScriptProcessor(bufferLength, 1, 1);
         this._bufferSource = this._audioContext.createBufferSource();
 
+        // https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer
         this._streamSource.connect(this._scriptNode);
         this._bufferSource.connect(this._audioContext.destination);
+
+        // Initialize the Recorder Library
+        this._recorder = new Recorder(this._streamSource);
+
       }).catch ((e) => {
         throw "Microphone: " + e.name + ". " + e.message;
       })
@@ -101,13 +97,22 @@ class Microphone {
       // Create an array of buffer array until the user finishes recording
       this._audioBuffer.push(this._realtimeBuffer);
       this._audioBufferSize += this._bufferLength;
+
+      console.log((this._audioBuffer).length)
+
     }
   }
 
+  // https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode/start
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then
+  // this function plays back audio in the buffer
+  // if setBuffer is successful then bufferSource.start (playback) is called else an error is thrown
+  // if unsuccessful
   playback() {
     this._setBuffer().then((bufferSource) => {
       bufferSource.start();
     }).catch((e) => {
+        console.log('Oh No!')
       throw "Error playing back audio: " + e.name + ". " + e.message;
     })
   }
@@ -115,9 +120,10 @@ class Microphone {
   _setBuffer() {
     return new Promise((resolve, reject) => {
       // New AudioBufferSourceNode needs to be created after each call to start()
+      console.log('inside _setBuffer()');
       this._bufferSource = this._audioContext.createBufferSource();
       this._bufferSource.connect(this._audioContext.destination);
-
+        // where is this._audioBuffer set, when does the size become > 0???
       let mergedBuffer = this._mergeBuffers(this._audioBuffer, this._audioBufferSize);
       let arrayBuffer = this._audioContext.createBuffer(1, mergedBuffer.length, this._sampleRate);
       let buffer = arrayBuffer.getChannelData(0);
@@ -133,6 +139,7 @@ class Microphone {
   }
 
   _mergeBuffers(bufferArray, bufferSize) {
+    console.log('inside mic._mergeBuffers()')
     // Not merging buffers because there is less than 2 buffers from onaudioprocess event and hence no need to merge
     if (bufferSize < 2) return;
 
@@ -150,11 +157,18 @@ class Microphone {
 
     this._clearBuffer();
     this._isRecording = true;
+
+    console.log('inside mic.startRecording()')
   }
 
   stopRecording() {
     if (!this._isRecording) {
       this._clearBuffer();
+
+      // Stop the recorder instance
+      this._recorder && this._recorder.stop();
+
+
       return;
     }
 
@@ -174,48 +188,94 @@ class Microphone {
   }
 }
 
-function startListening(mic, args, ctx) {
+function startListening(mic, args) {
   // Single button for recording using the mic icon
+  console.log('hello');
   if (document.getElementById("recordMic")) {
-    ctx.recordMicButton = document.getElementById("recordMic");
+    console.log('found recordMic element');
+    var recordMicButton = document.getElementById("recordMic");
 
-    ctx.recordMicButton.addEventListener("mousedown", (event) => { startRecordingWithMicButton(mic, ctx); });
-    ctx.recordMicButton.addEventListener("mouseup", (event) => { stopRecordingWithMicButton(mic, args, ctx); });
+    recordMicButton.addEventListener("mousedown", (event) => { startRecordingWithMicButton(mic, recordMicButton); });
+    recordMicButton.addEventListener("mouseup", (event) => { stopRecordingWithMicButton(mic, recordMicButton, args); });
   }
 }
 
-function stopListening(ctx) {
-  if (ctx.recordMicButton) {
-    ctx.recordMicButton.removeEventListener("mousedown", startRecordingWithMicButton);
-    ctx.recordMicButton.removeEventListener("mouseup", stopRecordingWithMicButton);
+function stopListening() {
+  if (recordMicButton) {
+    recordMicButton.removeEventListener("mousedown", startRecordingWithMicButton);
+    recordMicButton.removeEventListener("mouseup", stopRecordingWithMicButton);
   }
 }
 
-function startRecordingWithMicButton(mic, ctx) {
-  mic.startRecording();
-
-  if (ctx.recordMicButton) {
-    ctx.recordMicButton.style.opacity = 0.3;
+function startRecordingWithMicButton(mic, recordMicButton) {
+    console.log('record button pressed')
+    mic.startRecording();
+    mic._recorder && mic._recorder.record();
+    // if record mic button is pressed down, we want to keep adding to the buffer
+  if (recordMicButton) {
+    update(mic)
+    recordMicButton.style.opacity = 0.3;
   }
 }
 
-function stopRecordingWithMicButton(mic, args, ctx) {
+function stopRecordingWithMicButton(mic, recordMicButton, args) {
+
   mic.stopRecording();
-
-  console.log(args)
+  console.log('button released')
   // Play back the audio immediately after it stops recording
-  if (args.isPlayingMicInput) {
+  console.log(args)
+  // when we release the button, buffer is cleared and sound is played
+  if (args.default) {
+
     console.log('HELLLLOoOOOOOOOO')
     mic.playback();
+
+    // export audio blob as wav file
+    mic._recorder.exportWAV(function (blob) {
+
+     // Clear the Recorder to start again !
+        mic._recorder.clear();
+
+        var xhr=new XMLHttpRequest();
+        xhr.onload=function(e) {
+            if(this.readyState === 4) {
+                console.log("Server returned: ",e.target.responseText);
+            }
+        };
+        var fd=new FormData();
+        fd.append("file", blob, "test.wav");
+        xhr.open("POST", "/upload", true); //trigger the upload function to store the audio file
+        xhr.send(fd);
+    }, ("audio/wav"));
   }
 
-  if (ctx.recordMicButton) {
-    ctx.recordMicButton.style.opacity = 1.0;
+  if (recordMicButton) {
+    recordMicButton.style.opacity = 1.0;
   }
 }
 
 
-var canvas = document.getElementById("ctx");
-var ctx = canvas.getContext('2d');
-setup(parameters[0].key, ctx);
-update(parameters[0].key, ctx)
+
+var parameters = [
+  {
+    key: 'isPlayingMicInput',
+    type: 'boolean',
+    default: 'false',
+    name: 'Test Mic Input'
+  }
+];
+
+function setup(args) {
+  var mic = new Microphone();
+  //update(mic)
+  startListening(mic, args);
+};
+
+
+setup(parameters[0]);
+
+
+// attach another event listener to recordMicbutton
+// every time a mouseup event fires, another function is called
+
+// this function will upload the recorded audio file from the buffer
