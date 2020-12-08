@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech recognition</title>
+
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/speech.css') }}">
+</head>
+<body>
+
+<div class="single-post">
+    <div class="single-post-head" style="background-color: #3bab87">
+        <h1 class="post-header" style="color: rgba(255, 255, 255, 1)">
+            Speech-to-text using Python and Keras/Tensorflow
+        </h1>
+
+    </div>
+    <div class="article article-single">
+        <div class="blog-banner">
+            <div class="blog-banner-content">
+                <img src="{{url_for('static', filename='sinewave.jpg')}}" />
+            </div>
+        </div>
+        <p>
+            This is an app to demonstrate my speech recognition model predicting
+            what is said as a user speaks into the web browser.
+            To start, click and hold onto the microphone icon and say something. When
+            you are finished release the mouse button to hear your words played back to you
+        </p>
+<!--        <div class="recording_area">-->
+            <button id="recordMic">
+                <img src="{{url_for('static', filename='mic.png')}}">
+            </button>
+<!--        </div>-->
+
+    </div>
+
+
+</div>
+
+
+{% assets "main_js" %}
+<script type="text/javascript" src="{{ASSET_URL}}" ></script>
+{% endassets %}
+
+<script type=text/javascript src="{{url_for('static',filename='microphoneController.js')}}"></script>
+
+</body>
+</html>

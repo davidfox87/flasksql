@@ -1,5 +1,3 @@
-
-
 function update(mic) {
   if (mic.isRecording) {
     mic.processAudio();
@@ -242,12 +240,21 @@ function stopRecordingWithMicButton(mic, recordMicButton, args) {
                 console.log("Server returned: ",e.target.responseText);
             }
         };
+
+
+        var newDate = new Date();
+        var time = newDate.getHours() + "_" + newDate.getMinutes() + "_" + newDate.getSeconds();
+        document.getElementById("test").innerHTML = time;
+
         var fd=new FormData();
-        fd.append("file", blob, "test.wav");
+        fd.append("file", blob, time.concat(".wav"));
         xhr.open("POST", "/upload", true); //trigger the upload function to store the audio file
         xhr.send(fd);
     }, ("audio/wav"));
   }
+
+
+  //could also display the prediction here too instead of pressing a predict button
 
   if (recordMicButton) {
     recordMicButton.style.opacity = 1.0;

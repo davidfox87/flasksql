@@ -1,145 +1,116 @@
 <!DOCTYPE html>
-<html>
-<style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
 
-.navbar-default {
-    background-color: #232f3e;
-}
-.navbar {
-    border: none;
-    padding: 13px;
-    margin-bottom: 0;
-}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
+</head>
 
-.demo-header {
-    color: #363636;
-    text-align: left;
-    height: 200px;
-    margin: 20px 0 -40px 0;
-}
-
-demo-header h1 {
-
-    font-size: 46px;
-    font-weight: 600;
-    line-height: 1.1;
-    margin: 0;
-}
-
-.container {
-    padding-right: 20px;
-    padding-left: 20px;
-    width: 1170px;
-    margin-left: 120px;
-    margin-right: 120px
-}
-
-
-p {
-    margin-bottom: 15px;
-}
-
-body {
-    font-family: Amazon Ember, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    font-weight: 300;
-}
-
-
-#recordMic {
-    border-radius: 50%;
-    border: none;
-    padding: 8px 6px 4px 6px;
-    text-align: center;
-    text-decoration: none;
-}
-
-.alignCenter {
-    position: absolute;
-    left: 50%;
-    bottom: 50%;
-}
-
-.canvas button{
-    display: block;
-}
-
-h2 {
-    margin: 22px 0;
-}
-</style>
 <body>
 
-    <script type=text/javascriptsrc="{{url_for('static',filename='jquery-3.5.1.min.js')}}"></script>
-
 <nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-<!--            <a class="navbar-github" style="padding:10px" href="/">-->
-<!--            </a>-->
-        </div>
-
-    </div>
+    <h2 class="site-name">
+        My Blog
+    </h2>
 </nav>
 
-<div class="demo-header">
 
-    <div class="container" style="position: relative; top: 50%; transform: translateY(-50%);">
-        <h1>
-            Capturing and translating speech to text from Microphone Input
-        </h1>
-
-        <p>
-            By David Fox | Posted November 26, 2020
-        </p>
-    </div>
+<div class="section blog-categories blog-categories-active-all-posts">
+    <a class="text-darkblue blogCategoriesLink blog-category-about-me" href="/blog/">About me.</a>
+    <a class="text-darkgreen blogCategoriesLink" href="/blog/javascript/">Resume</a>
+    <a class="text-pink blogCategoriesLink" href="/blog/css/">Interests</a>
+    <a class="text-red blogCategoriesLink" href="/blog/design/">Projects</a>
 </div>
 
-<div class="container">
-        <p>This is an app to demonstrate my speech recognition model predicting
-        what is said as a user speaks into the web browser.
-        To start, click and hold onto the microphone icon and say something. When
-        you are finished release the mouse button to hear your words played back to you
-        </p>
+<div class="section grid-items">
+    <a class="grid-item post-preview" href="#" style="background-color: #3bab87">
+        <h1 class="grid-item-header" style="color: rgba(255,255,255,1)">Audio signal processing and speech recognition</h1>
+        <span class="grid-item-button">
+            <span class="grid-item-button-label">Read More</span>
+        </span>
+        <p class="grid-item-text" style="color: rgba(255, 255, 255, 1)">Learn how to build and deploy a speech recognition model using  Keras/Tensorflow and flask.</p>
+    </a>
+
+    <a class="grid-item post-preview" href="#" style="background-color: #FDF0EC">
+        <h1 class="grid-item-header" style="color: rgba(0,0,0,1)">Prediction of diabetes using classification</h1>
+        <span class="grid-item-button">
+            <span class="grid-item-button-label">Read More</span>
+        </span>
+        <p class="grid-item-text" style="color: rgba(0, 0, 0, 1)">
+            Use Logistic regression and other approaches to identify risk factors for diabetes</p>
+    </a>
+
+    <a class="grid-item post-preview" href="#" style="background-color: #1c323d">
+        <h1 class="grid-item-header" style="color: rgba(255,255,255,1)">Hand gesture classification using EMG recordings</h1>
+        <span class="grid-item-button">
+            <span class="grid-item-button-label">Read More</span>
+        </span>
+        <p class="grid-item-text" style="color: rgba(255, 255, 255, 1)">xxx</p>
+    </a>
+
+    <a class="grid-item post-preview" href="#" style="background-color: #98bec8">
+        <h1 class="grid-item-header" style="color: rgba(255,255,255,1)">Predicting changes in the stock market</h1>
+        <span class="grid-item-button">
+            <span class="grid-item-button-label">Read More</span>
+        </span>
+        <p class="grid-item-text" style="color: rgba(255, 255, 255, 1)">xxx</p>
+    </a>
 </div>
 
-    <div class="canvas" style="width: 720px;
-height: 150px; padding-left: 120px; padding-right: 120px; text-align: center;">
 
-        <button id="recordMic">
-            <img src="{{url_for('static', filename='mic.png')}}">
-        </button>
+<!--<div class="section">-->
+<!--        <p>This is an app to demonstrate my speech recognition model predicting-->
+<!--        what is said as a user speaks into the web browser.-->
+<!--        To start, click and hold onto the microphone icon and say something. When-->
+<!--        you are finished release the mouse button to hear your words played back to you-->
+<!--        </p>-->
+<!--</div>-->
 
-    </div>
+<!--    <div class="canvas" style="width: 720px;-->
+<!--height: 250px; text-align: center;-->
+<!--        display: flex;-->
+<!--  flex-direction: column; border: 3px solid green;-->
+<!--  left: 25%;">-->
+<!--        <div><h2>Last uploaded file:</h2>-->
+<!--            <p><span id="test"></span></p>-->
+<!--        </div>-->
 
-<div class="container">
-    <h2>Predict</h2>
+<!--        <button id="recordMic">-->
+<!--            <img src="{{url_for('static', filename='mic.png')}}">-->
+<!--        </button>-->
 
-    <a href=# id=predict class="prediction_link">Return Text Prediction</a>
+<!--    </div>-->
 
-    <p><span id=result ></span></p>
-</div>
+<!--<div class="container">-->
+<!--    <h2>Predict</h2>-->
+
+<!--    <a href=# id=predict class="prediction_link">Return Text Prediction</a>-->
+
+<!--    <p><span id=result ></span></p>-->
+
+
+<!--</div>-->
 
 
 
-{% assets "main_js" %}
-<script type="text/javascript" src="{{ASSET_URL}}" ></script>
-{% endassets %}
+<!--{% assets "main_js" %}-->
+<!--<script type="text/javascript" src="{{ASSET_URL}}" ></script>-->
+<!--{% endassets %}-->
 
-<script type=text/javascriptsrc="{{url_for('static',filename='microphoneController.js')}}"></script>
+<!--<script type=text/javascript src="{{url_for('static',filename='microphoneController.js')}}"></script>-->
 
- <script type=text/javascript>
-  $(function() {
-    $('a#predict').bind('click', function() {
-        $.getJSON("/predict",
-                function(data) {
-                    $('#result').text(data.result);
-                }
-        );
-    });
-  });
-</script>
+<!-- <script type=text/javascript>-->
+<!--  $(function() {-->
+<!--    $('a#predict').bind('click', function() {-->
+<!--        $.getJSON("/predict",-->
+<!--                function(data) {-->
+<!--                    $('#result').text(data.result);-->
+<!--                }-->
+<!--        );-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
 
 </body>
 </html>

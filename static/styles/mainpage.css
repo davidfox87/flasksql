@@ -1,0 +1,217 @@
+
+.grid-item-text {
+    margin: 0 auto 60px;
+    width: 80%;
+    z-index: 10;
+    max-width: 500px;
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.grid-item:hover .grid-item-text {
+    transform: translate3D(0, 8px, 0);
+}
+.navbar-default {
+    background-color: #232f3e;
+}
+.navbar {
+    border: none;
+    padding: 13px;
+    margin-bottom: 0;
+}
+/*p {
+    margin-bottom: 15px;
+}*/
+
+body {
+    position: relative;
+    font: normal 16px/1.9em "Inter", "Source Sans Pro","Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+}
+
+.site-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-weight: 800;
+    padding-top: 2.9vmin;
+    text-align: center;
+    font-family: Source Sans Pro,Helvetica Neue,Arial,sans-serif;
+    z-index: 1;
+    top: 2px;
+    position: relative;
+    color: #a5acbb;
+}
+
+.section {
+    width: 1280px;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: 0px auto 0;
+    padding-top: 40px;
+}
+
+
+.blog-categories {
+    margin-top: 0;
+    text-align: center;
+    font-weight: 800;
+    padding: 30px 10px 0;
+    font-size: 24px;
+}
+
+.blogCategoriesLink:hover {
+    color: #fff;
+}
+
+.blogCategoriesLink::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: scaleY(0);
+    transform-origin: 0 100%;
+    transition: all 0.2s ease-out;
+    z-index: -1;
+}
+
+.blogCategoriesLink:hover::after {
+    transform: scaleY(1);
+}
+.blogCategoriesLink {
+    text-decoration: none;
+    padding-right: 2px;
+    transition: color 0.25s ease-in-out;
+    transform: translateZ(0);
+    position: relative;
+    display: inline-block;
+}
+.text-pink {
+ color:#e8c3b9;
+}
+.text-pink::after {
+ background-color:#e8c3b9;
+}
+.text-darkgreen {
+ color:#244a53;
+}
+.text-darkgreen::after {
+ background-color:#244a53;
+}
+.text-red {
+ color:#bf615e;
+}
+.text-red::after {
+ background-color:#bf615e;
+}
+.text-lightblue {
+ color:#99bec7;
+}
+.text-lightblue::after {
+ background-color:#99bec7;
+}
+.text-darkblue {
+ color:#2b2f3c;
+}
+.text-darkblue::after {
+ background-color:#2b2f3c;
+}
+
+.grid-items {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.grid-item {
+    flex: 1 50%;
+    padding: 30px 50px 60px;
+    min-height: 500px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 25px;
+}
+
+.grid-item-header {
+    font-size: 46px;
+    line-height: 1.3em;
+    margin: 60px auto 0.65em;
+    margin-right: auto;
+    margin-left: auto;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateZ(0);
+    font-weight: 800;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    max-width: 680px;
+    z-index: 10;
+    letter-spacing: -0.3px;
+}
+
+.grid-item-button {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    padding: 17px 20px;
+    background-color: #000;
+    color: #fff;
+    font-size: 13px;
+    transform-origin: 0 0;
+    will-change: transform, opacity;
+    transform: scaleY(0) translateZ(0);
+    transition: transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+    font-family: Inter,Source Sans Pro,Helvetica Neue,Arial,sans-serif;
+}
+
+
+.grid-item-button-label {
+    transform: translateY(-15px);
+    transition: transform 0.35s cubic-bezier(0.19, 1, 0.22, 1) 0.1s,opacity 0.35s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
+    display: block;
+    opacity: 0;
+}
+
+.grid-item:hover {
+ color:#fff;
+}
+
+
+.grid-item:hover .grid-item-header {
+ transform:translate3D(0, -6px, 0);
+}
+
+.grid-item:hover .grid-item-button {
+ transform:scaleY(1) translateZ(0);
+ transition:transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.grid-item-button-label {
+ transform:translateY(-15px);
+ transition:transform 0.35s cubic-bezier(0.19, 1, 0.22, 1) 0.1s,opacity 0.35s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
+ display:block;
+ opacity:0
+}
+
+
+.grid-item:hover .grid-item-button {
+ transform:scaleY(1) translateZ(0);
+ transition:transform 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.grid-item:hover .grid-item-button-label {
+ transform:translateY(0);
+ opacity:1;
+}
+
+.post-preview:nth-child(3n+1) {
+    flex: 1 100%;
+}

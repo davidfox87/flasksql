@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 import os
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
-from util import log_specgram, int_sequence_to_text, predict_
+from util import log_specgram2, int_sequence_to_text, predict_
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import json
@@ -22,7 +22,6 @@ optimizer = SGD(lr=0.02, decay=1e-6, momentum=0.9, nesterov=True, clipnorm=5)
 
 model2.compile(loss=loss, optimizer=optimizer)
 
-model2.summary()
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './UPLOADED_AUDIO'
@@ -51,17 +50,19 @@ def upload():
 
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
-	rate, audio = wavfile.read('UPLOADED_AUDIO/filename.wav')
-	data_point = log_specgram(audio, rate)
+	rate, audio = wavfile.read('UPLOADED_AUDIO/11_54_0.wav')
+	data_point = log_specgram2(audio[:, 0], rate)
 
 	scaler = StandardScaler()
 	data_point = scaler.fit_transform(data_point)
 
 	pred_ = predict_(data_point, model2, 'model/model_0.h5')
-	print(str(pred_))
 
 	return jsonify(result=str(pred_))
 
+@app.route('/audioblog')
+def audioblog():
+	return render_template('speech_recognition.html')
 
 if __name__ == "__main__":
 	app.run(debug=True)
